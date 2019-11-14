@@ -1,0 +1,75 @@
+version: "3.7"
+
+volumes:
+  postgres_data:
+  demo_gem_bundle:
+  demo_node_modules:
+
+services:
+  postgres:
+    image: postgres:10.6-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - ${DEMO_PGPORT:-5432}:5432
+    environment:
+      POSTGRES_PASSWORD: 3x4mpl3P455w0rd
+
+  # The service that replicates the problem:
+  demo:
+    depends_on:
+      - postgres
+
+    image: icalialabs/flipper-and-new-relic-rpm-segfault-demo:development
+    
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+      args:
+        - DEVELOPER_UID=${UID:-1000}
+
+    volumes:
+      # Mount our app code directory (".") into our app containers at the
+      # "/usr/src" folder:
+      - .:/usr/src
+      
+      - demo_gem_bundle:/usr/local/bundle
+
+      # Replace the local 'node_modules' folder with a Docker volume, so we can
+      # run the frontend app either from the host (i.e. macOS) or using
+      # containers without having one or another clobbering the npm packages or
+      # conflicting versions for macOS / Linux:
+      - demo_node_modules:/usr/src/node_modules
+
+    # Keep the stdin open, so we can attach to our app container's process
+    # and do things such as byebug, etc:
+    stdin_open: true
+
+    # Enable sending signals (CTRL+C, CTRL+P + CTRL+Q) into the container:
+    tty: true
+
+    # entrypoint: /usr/src/bin/dev-entrypoint.sh
+
+    ports:
+      - ${DEMO_WEB_PORT:-3000}:3000
+    
+    command: rails db:setup
+    
+    # Specify environment variables available for our app containers. We'll
+    # leave a YML anchor in case we need to override or add more variables if
+    # needed on each app container:
+    environment:
+      # We'll set the DATABASE_URL environment variable for the app to connect
+      # to our postgres container - no need to use a 'config/database.yml' file.
+      DATABASE_URL: postgres://postgres:3x4mpl3P455w0rd@postgres:5432/demo_development
+
+      RAILS_ENV: development
+      RACK_ENV: development
+      RAILS_LOG_TO_STDOUT: "true"
+      
+      NEW_RELIC_AGENT_ENABLED: "true"
+      NEW_RELIC_ENV: development
+      NEW_RELIC_LICENSE_KEY: ${DEMO_NEW_RELIC_LICENSE_KEY}
+      NEW_RELIC_LOG: stdout
+      NEW_RELIC_ANALYTICS_EVENTS_MAX_SAMPLES_STORED: 500
