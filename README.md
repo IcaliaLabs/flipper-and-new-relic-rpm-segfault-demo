@@ -1,24 +1,26 @@
-# README
+# Flipper ActiveRecord Adapter + New Relic RPM Segfaults Demo
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## How to run
 
-Things you may want to cover:
+You'll require `git`, `docker` and `docker-compose` installed on your system.
 
-* Ruby version
+You'll also need a New Relic License Key. I obtained mine - for purposes of this
+demo - by creating a Heroku app, and adding the New Relic addon free.
 
-* System dependencies
+```
+# Clone the project - sorry for the long repo name:
+git clone https://github.com/IcaliaLabs/flipper-and-new-relic-rpm-segfault-demo.git segfault-demo
 
-* Configuration
+# Change into the project directory:
+cd segfault-demo
 
-* Database creation
+# Use your license here:
+echo DEMO_NEW_RELIC_LICENSE_KEY=XXXXXXXXXXXX > .env
 
-* Database initialization
+# Run the demo:
+docker-compose run demo
+```
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+This will build an image, launch a container with the code and run the
+`rails db:setup` command, which will cause a segfault when New Relic gathers the
+environment report.
