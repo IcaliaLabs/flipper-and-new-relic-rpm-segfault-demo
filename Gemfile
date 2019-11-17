@@ -45,7 +45,11 @@ gem 'newrelic_rpm', '~> 6.7', '>= 6.7.0.359'
 gem 'flipper', '~> 0.17.1'
 
 # Use activerecord to store the flipper feature toggles:
-gem 'flipper-active_record', '~> 0.17.1'
+gem 'flipper-active_record',
+    '~> 0.17.1',
+    github: 'IcaliaLabs/flipper',
+    branch: 'fix/active-record-adapter-loading',
+    ref: 'ccda4a821d972366f039d3c74aad332868e76a04'
 
 ################################################################################
 ################################################################################
