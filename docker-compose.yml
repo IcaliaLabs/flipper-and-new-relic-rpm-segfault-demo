@@ -66,6 +66,8 @@ services:
       RAILS_ENV: production
       RACK_ENV: production
       RAILS_LOG_TO_STDOUT: "true"
+
+      SECRET_KEY_BASE: d78c5f24f775f062dfb377bf373ffcba084c2b685a14306ada8993d390846b993d2a753972c5d070325899c93e3cbd0a4b80e36815d792aae8276d825559908c
       
       NEW_RELIC_AGENT_ENABLED: "true"
       NEW_RELIC_ENV: development
