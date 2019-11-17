@@ -64,8 +64,8 @@ services:
       # to our postgres container - no need to use a 'config/database.yml' file.
       DATABASE_URL: postgres://postgres:3x4mpl3P455w0rd@postgres:5432/demo_development
 
-      RAILS_ENV: development
-      RACK_ENV: development
+      RAILS_ENV: production
+      RACK_ENV: production
       RAILS_LOG_TO_STDOUT: "true"
       
       NEW_RELIC_AGENT_ENABLED: "true"
