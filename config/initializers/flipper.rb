@@ -1,3 +1,4 @@
+# config/initializers/flipper.rb
 require 'flipper'
 require 'flipper/adapters/active_record'
 
@@ -8,4 +9,8 @@ Flipper.configure do |config|
     # pass adapter to handy DSL instance
     Flipper.new(adapter)
   end
+end
+
+Flipper::UI.configure do |config|
+  config.fun = false
 end
