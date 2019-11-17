@@ -7,7 +7,7 @@ You'll require `git`, `docker` and `docker-compose` installed on your system.
 You'll also need a New Relic License Key. I obtained mine - for purposes of this
 demo - by creating a Heroku app, and adding the New Relic addon free.
 
-```
+```bash
 # Clone the project - sorry for the long repo name:
 git clone https://github.com/IcaliaLabs/flipper-and-new-relic-rpm-segfault-demo.git segfault-demo
 
